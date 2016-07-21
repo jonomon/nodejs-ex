@@ -112,8 +112,9 @@ app.get('/signup', function(req, res) {
     {
 	var username = req.query.username
 	var secretQuestion = req.query.sq
-	var secretAnswer = req.query.sa	
-	res.send("{username: " + username + ", secretQuestion: " + secretQuestion + ", secretAnswer: " + secretAnswer + "}");
+	var secretAnswer = req.query.sa
+	res.send('{ success: true}');
+	//res.send("{username: " + username + ", secretQuestion: " + secretQuestion + ", secretAnswer: " + secretAnswer + "}");
     }
 });
 
