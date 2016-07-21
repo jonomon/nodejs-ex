@@ -140,7 +140,7 @@ app.get('/getQuestion', function (req, res) {
         userCursor.findOne({username: username}, function(err, doc) {
             if (doc != null) 
             {
-                res.send('{ sa: ' + doc.sq + '}');
+                res.send('{ sq: ' + doc.sq + '}');
             }
             else 
             {
