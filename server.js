@@ -104,7 +104,7 @@ app.get('/signup', function (req, res) {
 
         var userCursor = db.collection('users');
         userCursor.findOne(function(err, doc) {
-            if (doc != null) {
+            if (doc == null) {
                 userCursor.insert({"username": username, "sq": secretQuestion, "sa": secretAnswer})
                 res.send('{ success: true}');
             } else {
