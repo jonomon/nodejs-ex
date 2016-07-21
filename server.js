@@ -128,6 +128,65 @@ app.get('/signup', function (req, res) {
   }
 });
 
+app.get('/getQuestion', function (req, res) {
+  if (!db) {
+    initDb(function(err){});
+  }
+  if (db) {
+    if (req.query) 
+    {
+        var username = req.query.username;
+        var userCursor = db.collection('users');
+        userCursor.findOne({username: username}, function(err, doc) {
+            if (doc == null) 
+            {
+                res.send('{ sa: ' + doc.sa + '}');
+            }
+            else 
+            {
+                res.send('{ success: false}');
+            }
+        });
+    }
+    else
+    {
+        res.send('{ success: false}');
+    }
+  }
+});
+
+app.get('/login', function (req, res) {
+  if (!db) {
+    initDb(function(err){});
+  }
+  if (db) {
+    if (req.query) 
+    {
+        var username = req.query.username;
+        var secretQuestion = req.query.sq;
+        var secretAnswer = req.query.sq;
+
+        var userCursor = db.collection('users');
+        userCursor.findOne({username: username, sq: secretQuestion, sa: secretAnswer},
+            function(err, doc) {
+                if (doc == null) 
+                {
+                    // TODO: send data from db.collection('data');
+                    res.send('{ success: true, data: WAH}');
+                }
+                else 
+                {
+                    res.send('{ success: false}');
+                }
+        });
+    }
+    else
+    {
+        res.send('{ success: false}');
+    }
+  }
+});
+
 // error handling
 app.use(function(err, req, res, next){
   console.error(err.stack);
