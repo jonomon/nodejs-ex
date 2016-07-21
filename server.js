@@ -34,6 +34,15 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
 
   }
 }
+
+String.prototype.format = function() {
+    var formatted = this;
+    for( var arg in arguments ) {
+        formatted = formatted.replace("{" + arg + "}", arguments[arg]);
+    }
+    return formatted;
+};
+
 var db = null,
     dbDetails = new Object();
 
@@ -74,24 +83,24 @@ app.get('/', function (req, res) {
   }
 });
 
-app.get('/pagecount', function (req, res) {
-  // try to initialize the db on every request if it's not already
-  // initialized.
-    if (!db)
-    {
-	initDb(function(err){});
-    }
-    if (db)
-    {
-	db.collection('counts').count(function(err, count ){
-	    res.send('{ pageCount: ' + count + '}');
-	});
-    }
-    else
-    {
-	res.send('{ pageCount: -1 }');
-    }
-});
+// app.get('/pagecount', function (req, res) {
+//   // try to initialize the db on every request if it's not already
+//   // initialized.
+//     if (!db)
+//     {
+// 	initDb(function(err){});
+//     }
+//     if (db)
+//     {
+// 	db.collection('counts').count(function(err, count ){
+// 	    res.send('{ pageCount: ' + count + '}');
+// 	});
+//     }
+//     else
+//     {
+// 	res.send('{ pageCount: -1 }');
+//     }
+// });
 
 app.get('/login', function(req, res) {
     if (!db) {
@@ -109,7 +118,10 @@ app.get('/signup', function(req, res) {
     }
     if (db)
     {
-	res.send('{ success: true}');
+	var username = req.query.username
+	var secretQuestion = req.query.sq
+	var secretAnswer = req.query.sa	
+	res.send("{username: {1}, secretQuestion: {2}, secretAnswer: {3}".format(username, secretQuestion, secretAnswer));
     }
 });
 
