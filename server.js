@@ -138,7 +138,7 @@ app.get('/getQuestion', function (req, res) {
         var username = req.query.username;
         var userCursor = db.collection('users');
         userCursor.findOne({username: username}, function(err, doc) {
-            if (doc == null) 
+            if (doc != null) 
             {
                 res.send('{ sa: ' + doc.sa + '}');
             }
@@ -169,7 +169,7 @@ app.get('/login', function (req, res) {
         var userCursor = db.collection('users');
         userCursor.findOne({username: username, sq: secretQuestion, sa: secretAnswer},
             function(err, doc) {
-                if (doc == null) 
+                if (doc != null) 
                 {
                     // TODO: send data from db.collection('data');
                     res.send('{ success: true, data: WAH}');
