@@ -35,14 +35,6 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
   }
 }
 
-String.prototype.format = function() {
-    var formatted = this;
-    for( var arg in arguments ) {
-        formatted = formatted.replace("{" + arg + "}", arguments[arg]);
-    }
-    return formatted;
-};
-
 var db = null,
     dbDetails = new Object();
 
@@ -121,7 +113,7 @@ app.get('/signup', function(req, res) {
 	var username = req.query.username
 	var secretQuestion = req.query.sq
 	var secretAnswer = req.query.sa	
-	res.send("{username: {1}, secretQuestion: {2}, secretAnswer: {3}".format(username, secretQuestion, secretAnswer));
+	res.send("{username: " + username + ", secretQuestion: " + secretQuestion + ", secretAnswer: " + secretAnswer + "}");
     }
 });
 
