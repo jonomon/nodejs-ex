@@ -105,10 +105,10 @@ app.get('/signup', function (req, res) {
         var userCursor = db.collection('users');
         userCursor.findOne(function(err, doc) {
             if (doc == null) {
-                userCursor.insert({"username": username, "sq": secretQuestion, "sa": secretAnswer})
+                userCursor.insert({username: username, sq: secretQuestion, sa: secretAnswer})
                 res.send('{ success: true}');
             } else {
-                res.send('{ success: false, message: username has been taken}');
+                res.send('{ success: false, message: username ' + username + 'has been taken}');
             }
         });
     }
