@@ -76,20 +76,18 @@ app.get('/', function (req, res) {
   }
 });
 
-app.get('/signup', function (req, res) {
+app.get('/pagecount', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
   if (!db) {
     initDb(function(err){});
   }
   if (db) {
-      var username = req.query.username;
-      var secretQuestion = req.query.sq;
-      var secretAnswer = req.query.sq;
-      res.send('{ username: ' + username + ', sq: ' + secretQuestion + ', sa: ' + secretAnswer+ '}');
-    //db.collection('counts').count(function(err, count ){
-    //  res.send('{ pageCount: ' + count + '}');
-    //});
+    db.collection('counts').count(function(err, count ){
+      res.send('{ pageCount: ' + count + '}');
+    });
+  } else {
+    res.send('{ pageCount: -1 }');
   }
 });
 
