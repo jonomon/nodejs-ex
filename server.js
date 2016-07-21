@@ -91,6 +91,27 @@ app.get('/pagecount', function (req, res) {
   }
 });
 
+app.get('/signup', function (req, res) {
+  // try to initialize the db on every request if it's not already
+  // initialized.
+  if (!db) {
+    initDb(function(err){});
+  }
+  if (db) {
+      if (req.query) 
+      {
+        var username = req.query.username;
+        var secretQuestion = req.query.sq;
+        var secretAnswer = req.query.sq;
+        res.send('{ success: true, username: ' + username + ', sq: ' + secretQuestion + ', sa: ' + secretAnswer + '}');
+      }
+      else
+      {
+        res.send('{ success: false}');
+      }
+  }
+});
+
 // error handling
 app.use(function(err, req, res, next){
   console.error(err.stack);
