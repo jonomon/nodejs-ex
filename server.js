@@ -92,23 +92,31 @@ app.get('/pagecount', function (req, res) {
 });
 
 app.get('/signup', function (req, res) {
-  // try to initialize the db on every request if it's not already
-  // initialized.
   if (!db) {
     initDb(function(err){});
   }
   if (db) {
-      if (req.query) 
-      {
+    if (req.query) 
+    {
         var username = req.query.username;
         var secretQuestion = req.query.sq;
         var secretAnswer = req.query.sq;
-        res.send('{ success: true, username: ' + username + ', sq: ' + secretQuestion + ', sa: ' + secretAnswer + '}');
-      }
-      else
-      {
+
+        var userCursor = db.collection('users');
+        userCursor.findOne(function(err, doc) {
+            assert.equal(err, null);
+            if (doc != null) {
+                userCursor.insert({"username": username, "sq": secretQuestion, "sa": secretAnswer})
+                res.send('{ success: true}');
+            } else {
+                res.send('{ success: false, message: username has been taken}');
+            }
+        });
+    }
+    else
+    {
         res.send('{ success: false}');
-      }
+    }
   }
 });
 
