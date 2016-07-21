@@ -104,10 +104,19 @@ app.get('/signup', function (req, res) {
 
         var userCursor = db.collection('users');
         userCursor.findOne(function(err, doc) {
-            if (doc == null) {
-                userCursor.insert({username: username, sq: secretQuestion, sa: secretAnswer})
-                res.send('{ success: true}');
-            } else {
+            if (doc == null) 
+            {
+                userCursor.insert({"username": username, "sq": secretQuestion, "sa": secretAnswer}, function (err, doc) {
+                    if (err) 
+                    {
+                        res.send('{ success: false, message: username ' + username + 'insertion error}');
+                    }
+                    else {
+                     res.send('{ success: true}');
+                    }});
+            }
+            else 
+            {
                 res.send('{ success: false, message: username ' + username + 'has been taken}');
             }
         });
