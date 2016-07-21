@@ -103,13 +103,13 @@ app.get('/signup', function (req, res) {
         var secretAnswer = req.query.sq;
 
         var userCursor = db.collection('users');
-        userCursor.findOne(function(err, doc) {
+        userCursor.findOne({username: username}, function(err, doc) {
             if (doc == null) 
             {
                 userCursor.insert({"username": username, "sq": secretQuestion, "sa": secretAnswer}, function (err, doc) {
                     if (err) 
                     {
-                        res.send('{ success: false, message: username ' + username + 'insertion error}');
+                        res.send('{ success: false, message: username ' + username + ' insertion error}');
                     }
                     else {
                      res.send('{ success: true}');
@@ -117,7 +117,7 @@ app.get('/signup', function (req, res) {
             }
             else 
             {
-                res.send('{ success: false, message: username ' + username + 'has been taken}');
+                res.send('{ success: false, message: username ' + username + ' has been taken}');
             }
         });
     }
