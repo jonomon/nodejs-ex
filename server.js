@@ -1,4 +1,4 @@
-//  OpenShift sample Node application
+//  OpenShift sample Node //  OpenShift sample Node application
 var express = require('express'),
     fs      = require('fs'),
     app     = express(),
@@ -34,7 +34,6 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
 
   }
 }
-
 var db = null,
     dbDetails = new Object();
 
@@ -75,24 +74,24 @@ app.get('/', function (req, res) {
   }
 });
 
-// app.get('/pagecount', function (req, res) {
-//   // try to initialize the db on every request if it's not already
-//   // initialized.
-//     if (!db)
-//     {
-// 	initDb(function(err){});
-//     }
-//     if (db)
-//     {
-// 	db.collection('counts').count(function(err, count ){
-// 	    res.send('{ pageCount: ' + count + '}');
-// 	});
-//     }
-//     else
-//     {
-// 	res.send('{ pageCount: -1 }');
-//     }
-// });
+app.get('/pagecount', function (req, res) {
+  // try to initialize the db on every request if it's not already
+  // initialized.
+    if (!db)
+    {
+	initDb(function(err){});
+    }
+    if (db)
+    {
+	db.collection('counts').count(function(err, count ){
+	    res.send('{ pageCount: ' + count + '}');
+	});
+    }
+    else
+    {
+	res.send('{ pageCount: -1 }');
+    }
+});
 
 app.get('/login', function(req, res) {
     if (!db) {
@@ -110,11 +109,7 @@ app.get('/signup', function(req, res) {
     }
     if (db)
     {
-	var username = req.query.username
-	var secretQuestion = req.query.sq
-	var secretAnswer = req.query.sa
-	res.send('{ success: true}');
-	//res.send("{username: " + username + ", secretQuestion: " + secretQuestion + ", secretAnswer: " + secretAnswer + "}");
+	res.send('{ success: false}');
     }
 });
 
