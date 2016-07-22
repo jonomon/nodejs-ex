@@ -64,7 +64,7 @@ var initDb = function(callback) {
 };
 
 app.get('/', function (req, res) {
-    res.render('index.html', { pageCountMessage : null});
+    res.render('index.html');
 });
 
 app.get('/signup', function (req, res) {
