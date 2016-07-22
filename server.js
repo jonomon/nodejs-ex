@@ -3,7 +3,8 @@ var express = require('express'),
     fs      = require('fs'),
     app     = express(),
     eps     = require('ejs'),
-    morgan  = require('morgan');
+    morgan  = require('morgan'),
+    io      = require('socket.io')(8000);
     
 Object.assign = require('object-assign');
 
@@ -187,6 +188,11 @@ app.get('/login', function (req, res) {
         res.send('{ success: false}');
     }
   }
+});
+
+// websockets
+io.on('connection', function (socket) {
+    console.log('WEBSOCKET WAS CONNECTED') 
 });
 
 // error handling
