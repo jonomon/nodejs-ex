@@ -1,4 +1,3 @@
-//  OpenShift sample Node //  OpenShift sample Node application
 var express = require('express'),
     fs      = require('fs'),
     app     = express(),
@@ -32,66 +31,40 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
     // Provide UI label that excludes user id and pw
     mongoURLLabel += mongoHost + ':' + mongoPort + '/' + mongoDatabase;
     mongoURL += mongoHost + ':' +  mongoPort + '/' + mongoDatabase;
-
   }
 }
 var db = null,
     dbDetails = new Object();
 
 var initDb = function(callback) {
-  if (mongoURL == null) return;
-
-  var mongodb = require('mongodb');
-  if (mongodb == null) return;
-
-  mongodb.connect(mongoURL, function(err, conn) {
-    if (err) {
-      callback(err);
-      return;
+    if (mongoURL == null)
+    {
+	return;	
     }
 
-    db = conn;
-    dbDetails.databaseName = db.databaseName;
-    dbDetails.url = mongoURLLabel;
-    dbDetails.type = 'MongoDB';
-    console.log('Connected to MongoDB at: %s', mongoURL);
-  });
+    var mongodb = require('mongodb');
+    if (mongodb == null)
+    {
+	return;
+    }
+
+    mongodb.connect(mongoURL, function(err, conn) {
+	if (err)
+	{
+	    callback(err);
+	    return;
+	}
+
+	db = conn;
+	dbDetails.databaseName = db.databaseName;
+	dbDetails.url = mongoURLLabel;
+	dbDetails.type = 'MongoDB';
+	console.log('Connected to MongoDB at: %s', mongoURL);
+    });
 };
 
 app.get('/', function (req, res) {
-    if (!db)
-    {
-	initDb(function(err){});
-    }
-    if (db)
-    {
-	var col = db.collection('counts');
-	col.insert({ip: req.ip, date: Date.now()});
-	col.count(function(err, count){
-	    res.render('index.html', { pageCountMessage : count, dbInfo: dbDetails });
-	});
-    } else {
-	res.render('index.html', { pageCountMessage : null});
-  }
-});
-
-app.get('/pagecount', function (req, res) {
-  // try to initialize the db on every request if it's not already
-  // initialized.
-    if (!db)
-    {
-	initDb(function(err){});
-    }
-    if (db)
-    {
-	db.collection('counts').count(function(err, count ){
-	    res.send('{ pageCount: ' + count + '}');
-	});
-    }
-    else
-    {
-	res.send('{ pageCount: -1 }');
-    }
+    res.render('index.html', { pageCountMessage : null});
 });
 
 app.get('/signup', function (req, res) {
